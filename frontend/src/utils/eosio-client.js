@@ -10,25 +10,48 @@ export default class EOSIOClient {
   }
 
   transaction = (actor, action, data) => {
-    return this.eos.transact({
-      actions: [
-        {
-          account: this.contractAccount,
-          name: action,
-          authorization: [
-            {
-              actor,
-              permission: 'active'
+    if (action == 'upsertbal' ) {
+      return this.eos.transact({
+        actions: [
+          {
+            account: `calcaccount`,
+            name: action,
+            authorization: [
+              {
+                actor,
+                permission: 'active'
+              }
+            ],
+            data: {
+              ...data
             }
-          ],
-          data: {
-            ...data
           }
-        }
-      ]
-    }, {
-      blocksBehind: 3,
-      expireSeconds: 30
-    })
+        ]
+      }, {
+        blocksBehind: 3,
+        expireSeconds: 30
+      })
+    } else {
+      return this.eos.transact({
+        actions: [
+          {
+            account: this.contractAccount,
+            name: action,
+            authorization: [
+              {
+                actor,
+                permission: 'active'
+              }
+            ],
+            data: {
+              ...data
+            }
+          }
+        ]
+      }, {
+        blocksBehind: 3,
+        expireSeconds: 30
+      })
+    }
   }
 }

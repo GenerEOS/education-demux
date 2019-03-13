@@ -4,7 +4,7 @@ import { NodeosActionReader } from 'demux-eos'
 import ActionHandler from './ActionHandler'
 
 import updaters from './updaters'
-import effects from './effects'
+import effects  from './effects'
 
 const actionHandler = new ActionHandler(updaters, effects, process.env.MONGODB_URL)
 

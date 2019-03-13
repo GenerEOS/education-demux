@@ -53,25 +53,37 @@ cleos wallet import -n blogwallet --private-key 5JD9AGTuTeD5BXZwGQ5AtwBqHK21aHmY
 
 # * Replace "blogwallet" with your own wallet name when you start your own project
 
-echo "=== deploy dapp smart contract ==="
+echo "=== Create contract test accounts ===="
 # create account for blogaccount with above wallet's public keys
 cleos create account eosio blogaccount EOS6PUh9rs7eddJNzqgqDx1QrspSHLRxLMcRdwHZZRL4tpbtvia5B EOS8BCgapgYA2L4LJfCzekzeSr3rzgSTUXRXwNi8bNRoz31D14en9
+cleos create account eosio eosio.token EOS6PUh9rs7eddJNzqgqDx1QrspSHLRxLMcRdwHZZRL4tpbtvia5B EOS8BCgapgYA2L4LJfCzekzeSr3rzgSTUXRXwNi8bNRoz31D14en9
+cleos create account eosio calcaccount EOS6PUh9rs7eddJNzqgqDx1QrspSHLRxLMcRdwHZZRL4tpbtvia5B EOS8BCgapgYA2L4LJfCzekzeSr3rzgSTUXRXwNi8bNRoz31D14en9
 
 # * Replace "blogaccount" with your own account name when you start your own project
 
+echo "=== deploy dapp smart contract ==="
 # $1 smart contract name 
 # $2 account holder name of the smart contract
 # $3 wallet that holds the keys for the account
 # $4 password for unlocking the wallet
 deploy_contract.sh blog blogaccount blogwallet $(cat blog_wallet_password.txt)
+deploy_contract.sh token eosio.token blogwallet $(cat blog_wallet_password.txt)
+deploy_contract.sh calculator calcaccount blogwallet $(cat blog_wallet_password.txt)
 
 echo "=== create user accounts ==="
 # script for creating data into blockchain
 create_accounts.sh
 
+echo "=== Create USD and issue USD tokens ===="
+cleos push action eosio.token create '["eosio", "1000000.0000 USD"]' -p eosio.token
+cleos push action eosio.token issue '["calcaccount", "900000.0000 USD", "issue"]' -p eosio
+
 echo "=== create mock data for contract ==="
 # script for calling actions on the smart contract to create mock data
 create_mock_data.sh
+
+echo "=== Set account permissions ==="
+cleos set account permission calcaccount active --add-code # to execute the inline action
 
 # * Replace the script with different form of data that you would pushed into the blockchain when you start your own project
 

@@ -31,3 +31,8 @@ export const updatePostsForLike = (prevState, likedPost) => {
 export const updatePostsForDelete = (prevState, deletedPost) => {
   return prevState.posts.filter(post => (post._id.timestamp !== deletedPost._id.timestamp) || (post._id.author !== deletedPost._id.author))
 }
+
+// Update Accounts
+export const updateAccounts = (prevState, updatedAccount) => {
+  return
+}

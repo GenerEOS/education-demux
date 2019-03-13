@@ -1,12 +1,12 @@
 import { AbstractActionHandler } from 'demux'
 import mongoose from 'mongoose'
-import { Post, BlockIndexState } from '../../models'
+import { Post, BlockIndexState, Account } from '../../models'
 import io from '../../utils/io'
 
 class ActionHandler extends AbstractActionHandler {
   constructor (updaters, effects, uri) {
     super(updaters, effects)
-    mongoose.connect(uri)
+    mongoose.connect(uri,{ useNewUrlParser: true })
 
     // CONNECTION EVENTS
     // Connection successful
@@ -33,7 +33,7 @@ class ActionHandler extends AbstractActionHandler {
 
   async handleWithState (handle) {
     const context = { socket: io.getSocket() }
-    const state = { post: Post, blockIndexState: BlockIndexState }
+    const state = { post: Post, blockIndexState: BlockIndexState, account: Account }
     try {
       await handle(state, context)
     } catch (err) {

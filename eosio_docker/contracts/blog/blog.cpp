@@ -11,7 +11,7 @@ public:
   // constructor
   blog( name receiver, name code, datastream<const char*> ds ):
             contract( receiver, code, ds ),
-            _posts( receiver, receiver.value ) {}
+            _posts( receiver, receiver.value ) {} // (get_self, get_self().value)
 
 
   // use ACTION macro so that eosio-cpp will add this as an action to the ABI
@@ -54,7 +54,7 @@ public:
 
     auto post_index  = _posts.get_index<name("getbyskey")>();
     uint128_t skey = static_cast<uint128_t>(author.value) << 64 | timestamp; 
-
+    
     // verify it already exists
     auto post = post_index.find(skey);
     eosio_assert(post != post_index.end(), "Post could not be found");
