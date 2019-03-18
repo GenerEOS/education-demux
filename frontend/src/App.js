@@ -3,15 +3,14 @@ import axios from 'axios'
 
 import EOSIOClient from 'utils/eosio-client'
 import IOClient from 'utils/io-client'
-import { updatePostsForCreateAndEdit, updatePostsForLike, updatePostsForDelete, updateAccounts } from 'utils/posts-updater'
+import { updatePostsForCreateAndEdit, updatePostsForLike, updatePostsForDelete } from 'utils/posts-updater'
 import CreatePost from 'CreatePost/CreatePost'
 import Posts from 'Posts/Posts'
 
 class App extends Component {
   state = {
     createOpen: false,
-    posts: [],
-    accounts: []
+    posts: []
   }
 
   // Instantiate shared eosjs helper and socket io helper
@@ -25,7 +24,6 @@ class App extends Component {
   // Enable Realtime updates via Socket.io
   async componentDidMount () {
     this.loadPosts()
-    this.loadAccounts()
     this.io.onMessage('createpost', (post) => {
       this.setState((prevState) => ({ posts: updatePostsForCreateAndEdit(prevState, post) }))
     })
@@ -38,21 +36,12 @@ class App extends Component {
     this.io.onMessage('likepost', (post) => {
       this.setState((prevState) => ({ posts: updatePostsForLike(prevState, post) }))
     })
-    this.io.onMessage('upsertbal', (post) => {
-      this.setState((prevState) => ({ accounts: updateAccounts(prevState, post) }))
-    })
   }
 
   // Load posts
   loadPosts = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/posts/post`)
     this.setState({ posts: response.data.reverse() })
-  }
-
-  // Load accounts
-  loadAccounts = async() => {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/posts/account`)
-    this.setState({ accounts: response.data.reverse() })
   }
 
   // Create a post
@@ -129,20 +118,6 @@ class App extends Component {
       )
     } catch (err) {
       console.error(err)
-    }
-  }
-
-  upsertBal = async (post) => {
-    try {
-      await this.eosio.transaction(
-        process.env.REACT_APP_EOSIO_ACCOUNT,
-        `upsertbal`, {
-          account: process.env.REACT_APP_EOSIO_ACCOUNT,
-          // dob
-        }
-      )
-    } catch (err) {
-      console.error(err);
     }
   }
 

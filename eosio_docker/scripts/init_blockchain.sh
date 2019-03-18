@@ -68,7 +68,7 @@ echo "=== deploy dapp smart contract ==="
 # $4 password for unlocking the wallet
 deploy_contract.sh blog blogaccount blogwallet $(cat blog_wallet_password.txt)
 deploy_contract.sh token eosio.token blogwallet $(cat blog_wallet_password.txt)
-deploy_contract.sh calculator calcaccount blogwallet $(cat blog_wallet_password.txt)
+# deploy_contract.sh calculator calcaccount blogwallet $(cat blog_wallet_password.txt)
 
 echo "=== create user accounts ==="
 # script for creating data into blockchain
