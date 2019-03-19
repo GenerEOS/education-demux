@@ -170,28 +170,28 @@ class App extends Component {
               editPost={this.editPost}
               likePost={this.likePost}
             />
-            <div>
-              <Table dark>
-                <thead>
+          </div>
+          <div style={{ padding: '20px' }}>
+            <Table dark>
+              <thead>
+                <tr align='center'>
+                  <th>#</th>
+                  <th>Account Name</th>
+                  <th>DOB (Epoch utc)</th>
+                  <th>Balance (USD)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.accounts ? this.state.accounts.map(account => (
                   <tr align='center'>
-                    <th>#</th>
-                    <th>Account Name</th>
-                    <th>DOB (Epoch utc)</th>
-                    <th>Balance (USD)</th>
+                    <th scope="row">-</th>
+                    <td>{account.account}</td>
+                    <td>{account.dob}</td>
+                    <td>{account.balance}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {this.state.accounts ? this.state.accounts.map(account => (
-                    <tr align='center'>
-                      <th scope="row">-</th>
-                      <td>{account.account}</td>
-                      <td>{account.dob}</td>
-                      <td>{account.balance}</td>
-                    </tr>
-                  )) : null}
-                </tbody>
-              </Table>
-            </div>
+                )) : null}
+              </tbody>
+            </Table>
           </div>
         </div>
       </div>
