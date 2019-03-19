@@ -16,7 +16,7 @@ CONTRACT calculator : public eosio::contract {
 
         ACTION upsertbal(name account, uint64_t dob ) 
         {
-            require_auth(account);
+            require_auth(get_self());
             
             uint64_t current_time = now(); // Current Time in Seconds in UTC from Jan 1 1970
 
@@ -24,13 +24,13 @@ CONTRACT calculator : public eosio::contract {
 
             eosio_assert( current_time - dob >= age_threshold, "You must be older than 25 years to add a balance to your account" );
 
-            calcTable ctable( get_self(), account.value );
+            calcTable ctable( get_self(), get_self().value );
             auto citer = ctable.find( account.value );
 
             if ( citer == ctable.end() ) {
                 eosio::asset new_balance = eosio::asset(100000, native_sym); // 10.0000 USD
 
-                ctable.emplace( account, [&]( auto& c ) 
+                ctable.emplace( get_self(), [&]( auto& c ) 
                 {
                     c.account = account;
                     c.dob     = dob;
@@ -40,7 +40,7 @@ CONTRACT calculator : public eosio::contract {
                 eosio::asset old_balance = citer->balance;
                 eosio::asset new_balance = eosio::asset(100000 + old_balance.amount, native_sym);
 
-                ctable.modify( citer, account, [&]( auto& c ) 
+                ctable.modify( citer, get_self(), [&]( auto& c ) 
                 {   
                     c.balance = new_balance;
                 });

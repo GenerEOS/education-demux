@@ -10,7 +10,7 @@ export default class EOSIOClient {
   }
 
   transaction = (actor, action, data) => {
-    if (action == 'upsertbal' ) {
+    if (action === 'upsertbal' ) {
       return this.eos.transact({
         actions: [
           {

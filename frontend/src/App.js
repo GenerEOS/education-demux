@@ -6,6 +6,7 @@ import IOClient from 'utils/io-client'
 import { updatePostsForCreateAndEdit, updatePostsForLike, updatePostsForDelete, updateAccounts } from 'utils/posts-updater'
 import CreatePost from 'CreatePost/CreatePost'
 import Posts from 'Posts/Posts'
+import { Table } from 'reactstrap';
 
 class App extends Component {
   state = {
@@ -135,10 +136,10 @@ class App extends Component {
   // upsertBal = async (post) => {
   //   try {
   //     await this.eosio.transaction(
-  //       process.env.REACT_APP_EOSIO_ACCOUNT,
+  //       `calcaccount`,
   //       `upsertbal`, {
   //         account: process.env.REACT_APP_EOSIO_ACCOUNT,
-  //         // dob
+  //         dob: ...
   //       }
   //     )
   //   } catch (err) {
@@ -170,13 +171,26 @@ class App extends Component {
               likePost={this.likePost}
             />
             <div>
-              {this.state.accounts ? this.state.accounts.map(account => (
-                <div>
-                  <p>{account.account}</p>
-                  <p>{account.dob}</p>
-                  <p>{account.balance}</p>
-                </div>
-              )) : null}
+              <Table dark>
+                <thead>
+                  <tr align='center'>
+                    <th>#</th>
+                    <th>Account Name</th>
+                    <th>DOB (Epoch utc)</th>
+                    <th>Balance (USD)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.accounts ? this.state.accounts.map(account => (
+                    <tr align='center'>
+                      <th scope="row">-</th>
+                      <td>{account.account}</td>
+                      <td>{account.dob}</td>
+                      <td>{account.balance}</td>
+                    </tr>
+                  )) : null}
+                </tbody>
+              </Table>
             </div>
           </div>
         </div>
