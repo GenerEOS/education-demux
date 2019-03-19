@@ -34,5 +34,18 @@ export const updatePostsForDelete = (prevState, deletedPost) => {
 
 // Update Accounts
 export const updateAccounts = (prevState, updatedAccount) => {
-  return
+  let alreadyAdded = false
+  let updatedAccounts = prevState.accounts.map(post => {
+    if ((post.account == updatedAccount.account) && (post.dob == updatedAccount.dob)) {
+      alreadyAdded = true
+      return { ...post, ...updatedAccount }
+    }
+    return post
+  })
+
+  if (!alreadyAdded) {
+    updatedAccounts = [{ ...updatedAccount }, ...updatedAccounts]
+  }
+
+  return updatedAccounts
 }

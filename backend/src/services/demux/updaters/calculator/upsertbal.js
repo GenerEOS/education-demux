@@ -14,6 +14,7 @@ async function upsertBal (state, payload, blockInfo, context) {
                 balance: parseFloat(10)
             });
         }
+        context.stateCopy = JSON.parse(JSON.stringify(accountState))
     } catch (err) {
         console.error(err);
     }

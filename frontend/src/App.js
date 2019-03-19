@@ -132,19 +132,19 @@ class App extends Component {
     }
   }
 
-  upsertBal = async (post) => {
-    try {
-      await this.eosio.transaction(
-        process.env.REACT_APP_EOSIO_ACCOUNT,
-        `upsertbal`, {
-          account: process.env.REACT_APP_EOSIO_ACCOUNT,
-          // dob
-        }
-      )
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  // upsertBal = async (post) => {
+  //   try {
+  //     await this.eosio.transaction(
+  //       process.env.REACT_APP_EOSIO_ACCOUNT,
+  //       `upsertbal`, {
+  //         account: process.env.REACT_APP_EOSIO_ACCOUNT,
+  //         // dob
+  //       }
+  //     )
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
 
   // Toggle if create window is open
   toggleCreate = () => {
@@ -154,6 +154,7 @@ class App extends Component {
   }
 
   render () {
+    console.log(this.state.accounts);
     return (
       <div className={`layoutStandard ${this.state.createOpen ? 'createOpen' : ''}`}>
         <div className='logo'>EOSIO Starter</div>
@@ -168,6 +169,15 @@ class App extends Component {
               editPost={this.editPost}
               likePost={this.likePost}
             />
+            <div>
+              {this.state.accounts ? this.state.accounts.map(account => (
+                <div>
+                  <p>{account.account}</p>
+                  <p>{account.dob}</p>
+                  <p>{account.balance}</p>
+                </div>
+              )) : null}
+            </div>
           </div>
         </div>
       </div>
